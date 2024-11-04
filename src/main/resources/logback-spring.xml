@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- Console Appender for Development -->
+    <springProfile name="dev">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+                <jsonGenerator>
+                    <prettyPrint>true</prettyPrint>
+                </jsonGenerator>
+            </encoder>
+        </appender>
+        <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
+            <http>
+                <url>https://logs-prod-006.grafana.net/loki/api/v1/push</url>
+                <basicAuth>
+                    <username>998819</username>
+                    <password>glc_eyJvIjoiMTIyNTAwMyIsIm4iOiJzdGFjay0xMDQxMDM4LWhsLXdyaXRlLXNkZmxzZGYiLCJrIjoicFg5Z2Y2SXU3OXIxbXBEQTVGcDUxczA1IiwibSI6eyJyIjoicHJvZC11cy1lYXN0LTAifX0=</password>
+                </basicAuth>
+            </http>
+            <format>
+                <label>
+                    <pattern>app=${spring.application.name},host=${HOSTNAME},level=%level</pattern>
+                    <readMarkers>true</readMarkers>
+                </label>
+                <message>
+                    <pattern>
+                        {
+                        "level":"%level",
+                        "class":"%logger{36}",
+                        "thread":"%thread",
+                        "message": "%message",
+                        "requestId": "%X{X-Request-ID}"
+                        }
+                    </pattern>
+                </message>
+            </format>
+        </appender>
+        <root level="info">
+            <appender-ref ref="CONSOLE" />
+        </root>
+    </springProfile>
+
+    <!-- File and Loki Appender for Production -->
+    <springProfile name="prod">
+
+        <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
+            <http>
+                <url>https://logs-prod-006.grafana.net/loki/api/v1/push</url>
+                <basicAuth>
+                    <username>998819</username>
+                    <password>glc_eyJvIjoiMTIyNTAwMyIsIm4iOiJzdGFjay0xMDQxMDM4LWhsLXdyaXRlLXNkZmxzZGYiLCJrIjoicFg5Z2Y2SXU3OXIxbXBEQTVGcDUxczA1IiwibSI6eyJyIjoicHJvZC11cy1lYXN0LTAifX0=</password>
+                </basicAuth>
+            </http>
+            <format>
+                <label>
+                    <pattern>app=${spring.application.name},host=${HOSTNAME},level=%level</pattern>
+                    <readMarkers>true</readMarkers>
+                </label>
+                <message>
+                    <pattern>
+                        {
+                        "level":"%level",
+                        "class":"%logger{36}",
+                        "thread":"%thread",
+                        "message": "%message",
+                        "requestId": "%X{X-Request-ID}"
+                        }
+                    </pattern>
+                </message>
+            </format>
+        </appender>
+
+        <root level="info">
+            <appender-ref ref="FILE" />
+            <appender-ref ref="LOKI" />
+        </root>
+
+        <logger name="com.horace.url_shortener" level="debug" />
+    </springProfile>
+</configuration>

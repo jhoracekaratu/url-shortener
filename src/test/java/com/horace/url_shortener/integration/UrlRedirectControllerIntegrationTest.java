@@ -37,7 +37,7 @@ public class UrlRedirectControllerIntegrationTest {
 
     private String testOriginalUrl = "https://test.com";
     private String testShortUrl = "dsfsd";
-    private String endpoint = "/dsfsd";
+    private String endpoint = "/redirect/dsfsd";
     private Url testUrl;
 
     @BeforeEach

@@ -36,7 +36,7 @@ class UrlRedirectControllerTest {
 
     String testOriginalUrl="https://test.com";
     String testShortUrl="dsfsd";
-    private String endpoint="/dsfsd";
+    private String endpoint="/redirect/dsfsd";
     Url testUrl;
 
     @BeforeEach
